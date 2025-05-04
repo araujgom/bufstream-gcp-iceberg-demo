@@ -18,3 +18,15 @@ data_enforcement:
         # If a record cannot be validated, reject all records in the batch.
         #validation:
           #on_error: REJECT_BATCH
+
+storage:
+  provider: GCS
+  bucket: "${GCS_BUCKET_NAME}"
+
+iceberg_integration:
+  catalogs:
+    - name: gcp_iceberg
+      bigquery_metastore:
+        project: "${GCP_PROJECT_ID}"
+        location: "${BQ_LOCATION}"
+        cloud_resource_connection: "projects/${GCP_PROJECT_ID}/locations/${BQ_LOCATION}/connections/${BQ_CONNECTION_ID}"
