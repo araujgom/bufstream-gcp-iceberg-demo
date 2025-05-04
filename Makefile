@@ -8,6 +8,48 @@ BUFSTREAM_VERSION := 0.3.22
 
 BIN := .tmp
 
+# Helper function to source .env from the base folder and export TF_VAR_ prefixed variables
+export_tf_vars = \
+	if [ -f $(CURDIR)/.env ]; then \
+		set -a; . $(CURDIR)/.env; set +a; \
+		export TF_VAR_gcp_project_id="$${GCP_PROJECT_ID}"; \
+		export TF_VAR_gcp_region="$${GCP_REGION}"; \
+		export TF_VAR_gcs_bucket_name="$${GCS_BUCKET_NAME}"; \
+		export TF_VAR_bq_dataset_name="$${BQ_DATASET_NAME}"; \
+		export TF_VAR_bq_connection_id="$${BQ_CONNECTION_ID}"; \
+		export TF_VAR_bq_location="$${BQ_LOCATION}"; \
+		if [ -n "$${GCP_CREDENTIALS_FILE}" ]; then \
+			export TF_VAR_gcp_credentials_file="$${GCP_CREDENTIALS_FILE}"; \
+		fi; \
+	else \
+		echo ".env file not found. Please create it from .env.example."; exit 1; \
+	fi
+
+.PHONY: tf-init
+tf-init: # Initialize Terraform in the terraform directory.
+	@echo "Initializing Terraform..."
+	@cd terraform && $(export_tf_vars) && terraform init
+
+.PHONY: tf-plan
+tf-plan: # Generate a Terraform execution plan.
+	@echo "Planning Terraform changes..."
+	@$(export_tf_vars) && cd terraform && terraform plan
+
+.PHONY: tf-apply
+tf-apply: # Apply the Terraform changes. Requires interactive approval.
+	@echo "Applying Terraform changes..."
+	@$(export_tf_vars) && cd terraform && terraform apply
+
+.PHONY: tf-apply-auto
+tf-apply-auto: # Apply the Terraform changes automatically (no interactive approval). Use with caution.
+	@echo "Applying Terraform changes automatically..."
+	@$(export_tf_vars) && cd terraform && terraform apply -auto-approve
+
+.PHONY: tf-destroy
+tf-destroy: # Destroy the Terraform-managed infrastructure. Requires interactive approval.
+	@echo "Destroying Terraform infrastructure..."
+	@$(export_tf_vars) && cd terraform && terraform destroy
+
 .PHONY: bufstream-run
 bufstream-run: $(BIN)/bufstream
 	./$(BIN)/bufstream serve --config config/bufstream.yaml
