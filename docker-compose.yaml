@@ -8,6 +8,7 @@ services:
     environment:
       BUFSTREAM_KAFKA_HOST: 0.0.0.0
       BUFSTREAM_KAFKA_PUBLIC_HOST: bufstream
+      GOOGLE_APPLICATION_CREDENTIALS: /gcp/key.json
     ports:
       # We'll expose bufstream on the host at port 9092.
       - "9092:9092"
@@ -19,7 +20,8 @@ services:
       retries: 10
     # Edit config/bufstream.yaml within this repository to change configuation.
     volumes:
-      - "./config/bufstream.yaml:/bufstream.yaml"
+      - "./.tmp/bufstream.yaml:/bufstream.yaml:ro"
+      - "${GCP_SERVICE_ACCOUNT_KEY_PATH}:/gcp/key.json:ro"
     command: [
       "serve",
       "--config", "/bufstream.yaml",
