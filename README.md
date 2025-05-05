@@ -1,4 +1,4 @@
-# Bufstream + GCP + Iceberg Demo
+# Bufstream + dbt + BigQuery + Iceberg Demo
 
 This repository takes from some existing repositories - [bufstream_demo](https://github.com/bufbuild/bufstream-demo) and [dbt-iceberg-poc](https://github.com/borjavb/dbt-iceberg-poc) - to create an end-to-end data flow using Bufstream, BigQuery, dbt and Apache Iceberg.
 
