@@ -1,15 +1,5 @@
-# bufstream-demo
+# Bufstream + GCP + Iceberg Demo
 
-[Bufstream](https://buf.build/product/bufstream) is a fully self-hosted drop-in replacement for Apache Kafka® that writes data to S3-compatible object storage. It’s 100% compatible with the Kafka protocol, including support for exactly-once semantics (EOS) and transactions. Bufstream is 8x cheaper to operate, and a single cluster can elastically scale to hundreds of GB/s of throughput. It's the universal Kafka replacement for the modern age.
+This repository takes from some existing repositories - [bufstream_demo](https://github.com/bufbuild/bufstream-demo) and [dbt-iceberg-poc](https://github.com/borjavb/dbt-iceberg-poc) - to create an end-to-end data flow using Bufstream, BigQuery, dbt and Apache Iceberg.
 
-Additionally, for teams sending Protobuf messages across their Kafka topics, Bufstream is a perfect partner. Bufstream can enforce data quality and governance requirements on the broker with [Protovalidate](https://github.com/bufbuild/protovalidate). Bufstream can directly persist records as [Apache Iceberg™](https://iceberg.apache.org/) tables, reducing time-to-insight in popular data lakehouse products such as Snowflake or ClickHouse.
-
-This repository contains code used in [Bufstream's quickstart](https://buf.build/docs/bufstream/quickstart).
-Head over to the quickstart to walk through this repository and get started!
-
-## Curious to see more?
-
-To learn more about Bufstream, check out the
-[launch blog post](https://buf.build/blog/bufstream-kafka-lower-cost), dig into the
-[benchmark and cost analysis](https://buf.build/docs/bufstream/cost), or
-[join us in the Buf Slack](https://buf.build/links/slack)!
+The main goal is to demonstrate an integrated data pipeline where Bufstream streams and archive event data as Iceberg Bronze tables in GCS, also enabling them for direct querying in BigQuery, and then presenting how dbt could be used to transform the data into Silver and Gold tables, also keeping storage in GCS and querying in BigQuery.
