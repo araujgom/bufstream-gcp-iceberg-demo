@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: bronze_data
+    database: bufstream-gcp-iceberg-demo
+    schema: bronze_commerce_events
+    tables:
+      - name: email_updated
