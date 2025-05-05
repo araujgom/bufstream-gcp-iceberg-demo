@@ -19,3 +19,8 @@ terraform/crash.*.log
 .DS_Store
 Thumbs.db
 .env
+
+# DBT specific ignores
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
